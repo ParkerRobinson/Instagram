@@ -10,10 +10,7 @@ import UIKit
 
 class PhotosViewController: UIViewController {
     
-<<<<<<< Updated upstream
-=======
     @IBOutlet weak var tableView: UITableView!
->>>>>>> Stashed changes
     var feed: [NSDictionary]?
 
     override func viewDidLoad() {
@@ -35,11 +32,7 @@ class PhotosViewController: UIViewController {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
                             NSLog("response: \(responseDictionary)")
-<<<<<<< Updated upstream
-                            self.feed = responseDictionary
-=======
                             self.feed = responseDictionary["data"] as? [NSDictionary]
->>>>>>> Stashed changes
                     }
                 }
         });
@@ -47,9 +40,6 @@ class PhotosViewController: UIViewController {
         task.resume()
         
     }
-<<<<<<< Updated upstream
-
-=======
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         
@@ -85,7 +75,6 @@ class PhotosViewController: UIViewController {
         
         return cell
     }
->>>>>>> Stashed changes
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
