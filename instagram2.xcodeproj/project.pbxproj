@@ -14,6 +14,7 @@
 		BF0F42751C5AF69C004D2A30 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BF0F42731C5AF69C004D2A30 /* LaunchScreen.storyboard */; };
 		BFB4DCEF1C5AF7BD008731B4 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB4DCEE1C5AF7BD008731B4 /* FeedCell.swift */; };
 		BFB7C4C41C641C6E003CB4D6 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7C4C31C641C6E003CB4D6 /* PhotoDetailsViewController.swift */; };
+		BFB7C4C61C642A07003CB4D6 /* InfiniteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB7C4C51C642A07003CB4D6 /* InfiniteView.swift */; };
 		DFE64A72A7E7638222E9F511 /* Pods_instagram2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10BF34D7A471FE707D7B149D /* Pods_instagram2.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +30,7 @@
 		BF0F42761C5AF69C004D2A30 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFB4DCEE1C5AF7BD008731B4 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		BFB7C4C31C641C6E003CB4D6 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
+		BFB7C4C51C642A07003CB4D6 /* InfiniteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteView.swift; sourceTree = "<group>"; };
 		CD6D21C1AB3D9C84EA910FDB /* Pods-instagram2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instagram2.release.xcconfig"; path = "Pods/Target Support Files/Pods-instagram2/Pods-instagram2.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,6 +78,7 @@
 			children = (
 				BF0F426A1C5AF69C004D2A30 /* AppDelegate.swift */,
 				BF0F426C1C5AF69C004D2A30 /* ViewController.swift */,
+				BFB7C4C51C642A07003CB4D6 /* InfiniteView.swift */,
 				BF0F426E1C5AF69C004D2A30 /* Main.storyboard */,
 				BFB7C4C31C641C6E003CB4D6 /* PhotoDetailsViewController.swift */,
 				BF0F42711C5AF69C004D2A30 /* Assets.xcassets */,
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFB7C4C41C641C6E003CB4D6 /* PhotoDetailsViewController.swift in Sources */,
+				BFB7C4C61C642A07003CB4D6 /* InfiniteView.swift in Sources */,
 				BF0F426D1C5AF69C004D2A30 /* ViewController.swift in Sources */,
 				BF0F426B1C5AF69C004D2A30 /* AppDelegate.swift in Sources */,
 				BFB4DCEF1C5AF7BD008731B4 /* FeedCell.swift in Sources */,

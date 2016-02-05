@@ -11,7 +11,7 @@ import AFNetworking
 import MBProgressHUD
 
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
     
     
@@ -19,15 +19,65 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var urlHolder: NSURL?
     var feed: [NSDictionary]?
-    
+    var isMoreDataLoading = false
+    var loadingMoreView: InfiniteView?
+    var photosCount: Int = 20
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        let refreshControl = UIRefreshControl()
+        
+        let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteView.defaultHeight)
+        loadingMoreView = InfiniteView(frame: frame)
+        loadingMoreView!.hidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset;
+        insets.bottom += InfiniteView.defaultHeight;
+        tableView.contentInset = insets
+        
         loadDataFromNetwork()
+        
+        
     }
+    
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
+        let clientId = "e05c462ebd86446ea48a5af73769b602"
+        let url = NSURL(string:"https://api.instagram.com/v1/media/popular?client_id=\(clientId)")
+        let request = NSURLRequest(URL: url!)
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate:nil,
+            delegateQueue:NSOperationQueue.mainQueue()
+        )
+        
+        
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
+            completionHandler: { (dataOrNil, response, error) in
+                
+                if let data = dataOrNil {
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            
+                            MBProgressHUD.hideHUDForView(self.view, animated: true)
+                            self.feed = responseDictionary["data"] as? [NSDictionary]
+                            //print(responseDictionary["data"])
+                            self.tableView.reloadData()
+                            refreshControl.endRefreshing()
+                            
+                            
+                    }
+                }
+        });
+        task.resume()
+    }
+    
     func loadDataFromNetwork() {
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         
@@ -88,7 +138,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return photosCount
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -111,5 +161,59 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
  
 
         return cell
+    }
+    
+    
+    func loadMoreData() {
+        
+        let clientId = "e05c462ebd86446ea48a5af73769b602"
+        let url = NSURL(string:"https://api.instagram.com/v1/media/popular?client_id=\(clientId)")
+        let request = NSURLRequest(URL: url!)
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate:nil,
+            delegateQueue:NSOperationQueue.mainQueue()
+        )
+        
+        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
+            completionHandler: { (dataOrNil, response, error) in
+                self.isMoreDataLoading = false;
+                if let data = dataOrNil {
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            if(self.feed != nil) {
+                                self.feed = self.feed! + (responseDictionary["data"] as! [NSDictionary]);
+                                self.photosCount += 20
+                            } else {
+                                self.feed = responseDictionary["data"] as? [NSDictionary];
+                            }
+                            self.tableView.reloadData();
+                    }
+                }
+                self.loadingMoreView!.stopAnimating()
+                
+        });
+        task.resume()
+    }
+
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.dragging) {
+                isMoreDataLoading = true
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+                // Code to load more results
+                loadMoreData()		
+            }
+        }
     }
 }
